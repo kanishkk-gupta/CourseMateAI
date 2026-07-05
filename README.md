@@ -5,11 +5,7 @@
 ### Retrieval-Augmented Generation for Intelligent Document Conversations
 
 <p>
-<<<<<<< HEAD
 An open-source RAG application that lets you upload a PDF and chat with it -<br/>
-=======
-An open-source RAG application that lets you upload a PDF and chat with it —<br/>
->>>>>>> 81036c9c4b0ee3f8f7159f28f185746617349559
 grounded, context-aware answers powered by LangChain, ChromaDB, HuggingFace & Mistral AI.
 </p>
 
@@ -40,11 +36,7 @@ grounded, context-aware answers powered by LangChain, ChromaDB, HuggingFace & Mi
 
 **CourseMateAI** answers questions directly from your own PDF documents.
 
-<<<<<<< HEAD
 Instead of relying solely on an LLM's internal (and often outdated) knowledge, the app retrieves the most relevant passages from your document, feeds them to the model as context, and generates a response grounded in *your* content - cutting down on hallucinations and improving factual accuracy.
-=======
-Instead of relying solely on an LLM's internal (and often outdated) knowledge, the app retrieves the most relevant passages from your document, feeds them to the model as context, and generates a response grounded in *your* content — cutting down on hallucinations and improving factual accuracy.
->>>>>>> 81036c9c4b0ee3f8f7159f28f185746617349559
 
 The current release, **v1.0.0**, delivers a complete, minimal end-to-end RAG pipeline: ingestion → chunking → embedding → vector search → grounded generation, wrapped in a simple Streamlit UI.
 
@@ -54,7 +46,6 @@ The current release, **v1.0.0**, delivers a complete, minimal end-to-end RAG pip
 
 | | |
 |---|---|
-<<<<<<< HEAD
 | **PDF Upload** | Drop in any PDF and index it in seconds |
 | **Recursive Chunking** | Configurable chunk size & overlap for clean splits |
 | **Semantic Embeddings** | HuggingFace `BAAI/bge-small-en-v1.5` |
@@ -90,80 +81,6 @@ flowchart TD
     J --> K[Final Answer]
 ```
 
-=======
-| 📄 **PDF Upload** | Drop in any PDF and index it in seconds |
-| ✂️ **Recursive Chunking** | Configurable chunk size & overlap for clean splits |
-| 🧠 **Semantic Embeddings** | HuggingFace `BAAI/bge-small-en-v1.5` |
-| 🗄️ **Persistent Vector Store** | ChromaDB, stored locally on disk |
-| 🎯 **MMR Retrieval** | Maximum Marginal Relevance for relevant, non-redundant chunks |
-| 🤖 **Mistral AI Generation** | Fast, high-quality grounded answers |
-| 🔍 **Chunk Inspector** | View exactly which chunks were retrieved for an answer |
-| 💬 **Streamlit UI** | Clean, interactive chat interface |
-
----
-
-## 🏗️ Architecture
-
-```text
-                              Upload PDF
-                                  │
-                                  ▼
-                            PyPDFLoader
-                                  │
-                                  ▼
-                RecursiveCharacterTextSplitter
-                                  │
-                                  ▼
-                          Document Chunks
-                                  │
-                                  ▼
-                  HuggingFace Embeddings (BGE)
-                                  │
-                                  ▼
-                       Chroma Vector Database
-                                  │
-   ═══════════════════════════════╪═══════════════════════════════
-                                  │
-                            User Question
-                                  │
-                                  ▼
-                          Query Embedding
-                                  │
-                                  ▼
-                        MMR Vector Retriever  ◄──────────┘
-                                  │
-                                  ▼
-                      Relevant Document Chunks
-                                  │
-                                  ▼
-                        Prompt Construction
-                                  │
-                                  ▼
-                           Mistral AI LLM
-                                  │
-                                  ▼
-                          Contextual Answer
-```
-
-<details>
-<summary><b>View as Mermaid flowchart</b></summary>
-
-```mermaid
-flowchart TD
-    A[Upload PDF] --> B[Load PDF]
-    B --> C[Split into Chunks]
-    C --> D[Generate Embeddings]
-    D --> E[(ChromaDB)]
-
-    F[User Question] --> G[Generate Query Embedding]
-    G --> H[MMR Retriever]
-    E --> H
-    H --> I[Relevant Chunks]
-    I --> J[Mistral AI]
-    J --> K[Final Answer]
-```
-
->>>>>>> 81036c9c4b0ee3f8f7159f28f185746617349559
 </details>
 
 ---
@@ -199,12 +116,8 @@ CourseMateAI/
 ├── README.md
 │
 ├── chroma_db/                # Persistent Chroma vector database
-<<<<<<< HEAD
+├── assets/
 └── document_loaders/         # Source PDFs
-=======
-├── document_loaders/          # Source PDFs
-└── screenshots/
->>>>>>> 81036c9c4b0ee3f8f7159f28f185746617349559
 ```
 
 ---
@@ -213,11 +126,7 @@ CourseMateAI/
 
 ```bash
 # 1. Clone the repository
-<<<<<<< HEAD
 git clone https://github.com/kanishkk-gupta/CourseMateAI.git
-=======
-git clone https://github.com/<your-username>/CourseMateAI.git
->>>>>>> 81036c9c4b0ee3f8f7159f28f185746617349559
 cd CourseMateAI
 
 # 2. Install dependencies
@@ -254,11 +163,7 @@ Then:
 
 CourseMateAI runs a **two-stage** RAG workflow, deliberately split into two scripts.
 
-<<<<<<< HEAD
 ### Stage 1 : Indexing (`create_database.py`)
-=======
-### Stage 1 — Indexing (`create_database.py`)
->>>>>>> 81036c9c4b0ee3f8f7159f28f185746617349559
 
 Runs once per document (or whenever it changes):
 
@@ -266,11 +171,7 @@ Runs once per document (or whenever it changes):
 PDF → Load → Split into Chunks → Generate Embeddings → Store in ChromaDB
 ```
 
-<<<<<<< HEAD
 ### Stage 2 : Question Answering (`main.py`)
-=======
-### Stage 2 — Question Answering (`main.py`)
->>>>>>> 81036c9c4b0ee3f8f7159f28f185746617349559
 
 Runs on every user query, without touching the raw PDF again:
 
@@ -278,11 +179,7 @@ Runs on every user query, without touching the raw PDF again:
 Question → Query Embedding → Search ChromaDB → Retrieve Chunks → Build Prompt → Mistral AI → Answer
 ```
 
-<<<<<<< HEAD
 **Why split them?** Indexing (loading, chunking, embedding) is expensive and should happen exactly once. If it lived inside the query path, every question would re-embed the entire document - slow and wasteful. Separating indexing from inference mirrors how production RAG systems are designed.
-=======
-**Why split them?** Indexing (loading, chunking, embedding) is expensive and should happen exactly once. If it lived inside the query path, every question would re-embed the entire document — slow and wasteful. Separating indexing from inference mirrors how production RAG systems are designed.
->>>>>>> 81036c9c4b0ee3f8f7159f28f185746617349559
 
 ### Retrieval Strategy
 
@@ -301,7 +198,6 @@ retriever = vector_store.as_retriever(
 
 ---
 
-<<<<<<< HEAD
 
 ## 🗺️ Roadmap
 
@@ -365,92 +261,12 @@ Built on the excellent open-source ecosystem provided by **LangChain**, **Chroma
 
 ---
 
-=======
-## 📸 Screenshots
-
-| Home | Upload PDF |
-|---|---|
-| *Add screenshot* | *Add screenshot* |
-
-| Chat Interface | Retrieved Chunks |
-|---|---|
-| *Add screenshot* | *Add screenshot* |
-
----
-
-## 🗺️ Roadmap
-
-- [x] **v1.0.0** — Single PDF support, recursive chunking, ChromaDB, MMR retrieval, Mistral AI, Streamlit UI
-- [ ] **v1.1.0** — Multi-PDF support, dynamic document selection, improved file management
-- [ ] **v1.2.0** — Persistent chat history, conversation memory, better session management
-- [ ] **v1.3.0** — MultiQuery retriever, Parent Document retriever, retrieval quality improvements
-- [ ] **v2.0.0** — Hybrid search (BM25 + vector), cross-encoder reranking, query rewriting, source citations, streaming responses, authentication, production-ready architecture
-
-<details>
-<summary><b>Longer-term architectural goals</b></summary>
-
-**Architecture**
-- Configuration management (`config.py`)
-- Reusable retriever module & prompt management (`prompts.py`)
-- Dedicated RAG chains using LCEL
-
-**Retrieval**
-- Contextual compression, hybrid search, query rewriting, cross-encoder reranking
-
-**Engineering**
-- Logging, structured error handling, modular components
-
-**Product**
-- Multi-document support, agentic RAG, evaluation dashboard, source attribution
-
-</details>
-
----
-
-## 🎯 Learning Outcomes
-
-Building this project deepened practical understanding of:
-
-Document loaders · Recursive chunking · Embedding models · Vector databases · Semantic search · Retrieval strategies (MMR) · Prompt engineering · LangChain · ChromaDB · Mistral AI
-
----
-
-## 🤝 Contributing
-
-Contributions, issues, and feature requests are welcome!
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Open a Pull Request
-
-Please include clear documentation for any new feature and follow the existing project structure.
-
----
-
-## 📄 License
-
-Licensed under the **MIT License** — see [`LICENSE`](LICENSE) for details.
-
----
-
-## 🙏 Acknowledgements
-
-Built on the excellent open-source ecosystem provided by **LangChain**, **ChromaDB**, **Hugging Face**, **Mistral AI**, and **Streamlit**.
-
----
-
->>>>>>> 81036c9c4b0ee3f8f7159f28f185746617349559
 ## ✍️ Author
 
 **Kanishk Gupta**
 Computer Science Engineering undergraduate with a strong interest in Generative AI, LLMs, RAG, AI Engineering, and Full-Stack Development.
 
-<<<<<<< HEAD
 [GitHub](https://github.com/kanishkk-gupta) · [LinkedIn](https://linkedin.com/in/kanishkgupta16)
-=======
-[GitHub](https://github.com/your-username) · [LinkedIn](https://linkedin.com/in/your-profile)
->>>>>>> 81036c9c4b0ee3f8f7159f28f185746617349559
 
 ---
 
